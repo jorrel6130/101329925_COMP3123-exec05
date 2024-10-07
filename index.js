@@ -105,7 +105,7 @@ router.post('/login', (req,res) => {
   if (userNameValid == false) {
     output = {
       "status": "false",
-      "message": "User Name is invalid"
+      "message": "Username is invalid"
     }
   } else if (passwordValid == false) {
     output = {
@@ -127,15 +127,23 @@ router.post('/login', (req,res) => {
     in HTML format like <b>${username} successfully logout.<b>
 */
 router.get('/logout', (req,res) => {
-  res.send('This is logout router');
+  let username = req.query.username;
+  res.send(`<b>${username} successfully logged out.</b>`);
 });
 
 /*
 Add error handling middleware to handle below error
 - Return 500 page with message "Server Error"
 */
+
 app.use((err,req,res,next) => {
-  res.send('This is error router');
+  console.error(err.stack);
+    const errorObj = {
+        status: 500,
+        message: 'Server Error',
+        err: err.message
+    }
+    res.status(500).send(errorObj);
 });
 
 app.use('/', router);
