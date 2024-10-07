@@ -72,7 +72,6 @@ router.get('/profile', (req,res) => {
 */
 router.post('/login', (req,res) => {
   const jsonInput = req.body;
-  console.log(req.body);
   let inputUsername;
   let inputPassword;
   let userNameValid = false;
