@@ -79,7 +79,6 @@ router.post('/login', (req,res) => {
   let passwordValid = false;
   let output;
   for (var key in jsonInput) {
-    console.log(key);
     if (key == "username") {
       inputUsername = jsonInput[key];
     }
@@ -87,7 +86,6 @@ router.post('/login', (req,res) => {
       inputPassword = jsonInput[key];
     }
   }
-  console.log(`${inputUsername} and ${inputPassword}`);
   for (var key in users) {
     if (key == "username") {
       if (users[key] == inputUsername) {
@@ -99,7 +97,6 @@ router.post('/login', (req,res) => {
         passwordValid = true;
       }
     }
-    console.log(jsonInput[key]);
   }
 
   if (userNameValid == false) {
