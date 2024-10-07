@@ -2,6 +2,7 @@
 // 101329925
 
 const express = require('express');
+const fs = require('fs');
 const app = express();
 const router = express.Router();
 
@@ -11,7 +12,31 @@ const router = express.Router();
 - Return home.html page to client
 */
 router.get('/home', (req,res) => {
-  res.send('This is home router');
+  
+  const homePromise = new Promise((resolve, reject) => {
+    if (!fs.existsSync("home.html")) {
+        reject("Creating home.html...");
+    } else {
+        resolve("home.html found");
+    }
+  });
+
+  homePromise.then((resolve) => {
+    console.log(resolve);
+  }).catch((reject) => {
+    fs.writeFile("home.html", `<html>
+  <body>
+    <h1>Welcome to ExpressJS Tutorial</h1>
+  </body>
+</html>`, err => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log("home.html created");
+      }
+    });
+  })
+  res.sendFile('home.html', {root: __dirname })
 });
 
 /*
