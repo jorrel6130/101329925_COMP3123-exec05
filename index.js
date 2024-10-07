@@ -7,7 +7,8 @@ const users = require('./user.json');
 const app = express();
 const router = express.Router();
 
-const allUsers = JSON.parse(fs.readFileSync('user.json', 'utf8'));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 /*
 - Create new html file name home.html 
@@ -70,9 +71,55 @@ router.get('/profile', (req,res) => {
     }
 */
 router.post('/login', (req,res) => {
-  
-  
-  res.send('This is login router');
+  const jsonInput = req.body;
+  console.log(req.body);
+  let inputUsername;
+  let inputPassword;
+  let userNameValid = false;
+  let passwordValid = false;
+  let output;
+  for (var key in jsonInput) {
+    console.log(key);
+    if (key == "username") {
+      inputUsername = jsonInput[key];
+    }
+    if (key == "password") {
+      inputPassword = jsonInput[key];
+    }
+  }
+  console.log(`${inputUsername} and ${inputPassword}`);
+  for (var key in users) {
+    if (key == "username") {
+      if (users[key] == inputUsername) {
+        userNameValid = true;
+      }
+    }
+    if (key == "password") {
+      if (users[key] == inputPassword) {
+        passwordValid = true;
+      }
+    }
+    console.log(jsonInput[key]);
+  }
+
+  if (userNameValid == false) {
+    output = {
+      "status": "false",
+      "message": "User Name is invalid"
+    }
+  } else if (passwordValid == false) {
+    output = {
+      "status": "false",
+      "message": "Password is invalid"
+    }
+  } else {
+    output = {
+      "status": "true",
+      "message": "User is valid"
+    }
+  }
+
+  res.send(output);
 });
 
 /*
