@@ -3,8 +3,11 @@
 
 const express = require('express');
 const fs = require('fs');
+const users = require('./user.json');
 const app = express();
 const router = express.Router();
+
+const allUsers = JSON.parse(fs.readFileSync('user.json', 'utf8'));
 
 /*
 - Create new html file name home.html 
@@ -35,7 +38,7 @@ router.get('/home', (req,res) => {
         console.log("home.html created");
       }
     });
-  })
+  });
   res.sendFile('home.html', {root: __dirname })
 });
 
@@ -43,7 +46,8 @@ router.get('/home', (req,res) => {
 - Return all details from user.json file to client as JSON format
 */
 router.get('/profile', (req,res) => {
-  res.send('This is profile router');
+  res.header("Content-Type", 'application/json');
+  res.send(JSON.stringify(users));
 });
 
 /*
@@ -66,6 +70,8 @@ router.get('/profile', (req,res) => {
     }
 */
 router.post('/login', (req,res) => {
+  
+  
   res.send('This is login router');
 });
 
